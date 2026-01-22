@@ -1,0 +1,142 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mood Spotter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #000000;
+      color: #FAE502;
+      margin: 0;
+      padding: 20px;
+    }
+    section {
+      display: none;
+      max-width: 800px;
+      margin: auto;
+    }
+    section.active {
+      display: block;
+    }
+    button {
+      background-color: #FAE502;
+      color: #000000;
+      padding: 10px 20px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      background-color: #1a1a1a;
+      color: #FAE502;
+      border: 1px solid #FAE502;
+    }
+    pre {
+      background-color: #1a1a1a;
+      padding: 15px;
+      white-space: pre-wrap;
+      border: 1px solid #FAE502;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <section id="welcome" class="active">
+    <h2>Step 1: Welcome to the Mood Spotter</h2>
+    <p>This isn't meant to be a test, instead it's a casual tool.<br>
+    A checklist to look over, rather than a pop quiz at school.<br>
+    For once you can spot your moods, they become easier to handle,<br>
+    And you can prevent them from spiraling into a full-blown scandal.</p>
+    <button onclick="goToStep('mad')">Start</button>
+  </section>
+
+  <section id="mad">
+    <h2>😠 Mad</h2>
+    <p>When you feel wronged, misunderstood or unheard,<br>
+    be careful not to fly off the handle like a wild and frantic jailbird.</p>
+    <label for="mad-emotia">How stuck is the Mad feeling?</label>
+    <input type="text" id="mad-emotia">
+    <label for="mad-activity">Does it speed you up or shut you down?</label>
+    <input type="text" id="mad-activity">
+    <label for="mad-attachment">How personal does the Mad feel?</label>
+    <input type="text" id="mad-attachment">
+    <label for="mad-reflection">How often does the Mad feeling show up?</label>
+    <textarea id="mad-reflection"></textarea>
+    <label for="mad-notes">Anything else you’d like to say about this mood?</label>
+    <textarea id="mad-notes"></textarea>
+    <p>Anger can help you right something wrong, but it can also turn you to ash if you let it burn for too long.</p>
+    <button onclick="goToStep('meta')">Next</button>
+  </section>
+
+  <section id="meta">
+    <h2>Meta-Feeling Reflection</h2>
+    <p>When you have a feeling, that’s not the end of the story,<br>
+    You can also have a feeling about it in its own separate category.</p>
+    <label for="meta-feeling">How do you feel about feeling Mad?</label>
+    <textarea id="meta-feeling"></textarea>
+    <button onclick="goToStep('detangle')">Next</button>
+  </section>
+
+  <section id="detangle">
+    <h2>Emotional Detangling</h2>
+    <p>Once you can isolate and track each feeling,<br>
+    You can uncover what they’ve been concealing.</p>
+    <label for="stronger">Which emotion feels stronger right now?</label>
+    <input type="text" id="stronger">
+    <label for="harder">Which one is harder to let go of?</label>
+    <input type="text" id="harder">
+    <label for="interplay">Are they helping or blocking each other?</label>
+    <textarea id="interplay"></textarea>
+    <button onclick="compileSummary()">Finish</button>
+  </section>
+
+  <section id="closing">
+    <h2>Final Message</h2>
+    <p>You can say Haha Yowza to mean joy, comprehension and wonder,<br>
+    as you release the mood pressure you were under.</p>
+    <pre id="summary">Loading your results...</pre>
+  </section>
+
+  <script>
+    function goToStep(id) {
+      document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    function compileSummary() {
+      const activity = document.getElementById('mad-activity').value;
+      const energyEffect = activity.includes("both") 
+        ? "both activates and deactivates you — a sign of inner tension" 
+        : `affects your energy by ${activity}`;
+
+      const summary = `🟨 Mood Summary
+
+You started with a feeling of **Mad**, which you described as ${document.getElementById('mad-emotia').value} strong.
+It ${energyEffect}.
+You shared that it feels ${document.getElementById('mad-attachment').value} personal, and shows up ${document.getElementById('mad-reflection').value}.
+You also noted: “${document.getElementById('mad-notes').value}”.
+
+🟦 Meta-Feeling
+
+On top of that, you’re feeling **${document.getElementById('meta-feeling').value}** about being Mad —
+perhaps a sign of internal conflict around how you’re processing this emotion.
+
+🧵 Detangling Reflection
+
+You said **${document.getElementById('stronger').value}** is both your strongest and hardest-to-release emotion right now.
+And when paired with your ${document.getElementById('meta-feeling').value}, they seem to be **${document.getElementById('interplay').value}** —
+which might be keeping you stuck.`;
+
+      document.getElementById('summary').innerText = summary;
+      goToStep('closing');
+    }
+  </script>
+</body>
+</html>
